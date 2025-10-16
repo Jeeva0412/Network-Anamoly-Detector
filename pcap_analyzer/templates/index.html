@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Security Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .upload-section {
+            border: 3px dashed #3498db;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+        }
+        
+        .file-input {
+            margin: 20px 0;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+        
+        .info-section {
+            background: #e8f4fc;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .info-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-section li {
+            padding: 8px 0;
+            border-bottom: 1px solid #bdc3c7;
+        }
+        
+        .info-section li:before {
+            content: "✅ ";
+            margin-right: 10px;
+        }
+        
+        .result {
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        .result.safe {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .result.danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        .sample-files {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .sample-btn {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 20px;
+            background: #95a5a6;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
+        
+        .sample-btn:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Network Security Analyzer</h1>
+            <p>AI-Powered PCAP Analysis & Threat Detection</p>
+        </div>
+        
+        <div class="content">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="result {{ 'danger' if 'malicious' in message else 'safe' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <div class="upload-section">
+                <h2>Upload PCAP File for Analysis</h2>
+                <p>Upload a network capture file to detect security threats</p>
+                
+                <form method="POST" action="/analyze" enctype="multipart/form-data">
+                    <div class="file-input">
+                        <input type="file" name="file" accept=".pcap,.pcapng" required 
+                               style="font-size: 1.1em; padding: 10px;">
+                    </div>
+                    <button type="submit" class="btn">
+                        🚀 Analyze PCAP File
+                    </button>
+                </form>
+            </div>
+            
+            <div class="sample-files">
+                <h3>Test with Sample Files:</h3>
+                <a href="/test/normal" class="sample-btn">🧪 Normal Traffic</a>
+                <a href="/test/suspicious" class="sample-btn">🔴 Suspicious Traffic</a>
+                <a href="/test/malware" class="sample-btn">💀 Malware Traffic</a>
+            </div>
+            
+            <div class="info-section">
+                <h3>How It Works:</h3>
+                <ul>
+                    <li><strong>Upload</strong> any PCAP network capture file</li>
+                    <li><strong>AI Analysis</strong> using machine learning models</li>
+                    <li><strong>Threat Detection</strong> for malicious patterns</li>
+                    <li><strong>Email Alerts</strong> with detailed security report</li>
+                    <li><strong>Instant Results</strong> with confidence scores</li>
+                </ul>
+                
+                <h3 style="margin-top: 20px;">Detects:</h3>
+                <ul>
+                    <li>Port Scanning & Reconnaissance</li>
+                    <li>DDoS & Flood Attacks</li>
+                    <li>Malware Communications</li>
+                    <li>Suspicious Protocol Usage</li>
+                    <li>Data Exfiltration Attempts</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
